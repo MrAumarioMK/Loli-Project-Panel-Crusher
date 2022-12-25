@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://bemsdj5rqupdx"]
+
+[ext_resource type="Script" path="res://src/autoload/physics_fps_adjuster.gd" id="1_uralp"]
+
+[node name="PhysicsFpsAdjuster" type="Node"]
+script = ExtResource("1_uralp")
+
+[node name="PhysicsFpsUpdateTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="PhysicsFpsUpdateTimer" to="." method="_on_physics_fps_update_timer_timeout"]

@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://86mwlxt8n45v"]
+
+[ext_resource type="Script" path="res://src/scenes/game/game.gd" id="1_mhoeh"]
+[ext_resource type="PackedScene" uid="uid://b2us48ageul20" path="res://src/scenes/game/panel_piece.tscn" id="2_av8i8"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_mhoeh")
+panel_piece = ExtResource("2_av8i8")
+
+[node name="Board" type="Node2D" parent="."]
+
+[node name="PanelPieces" type="Node2D" parent="Board"]
+unique_name_in_owner = true
+
+[node name="SpawnLine" type="Line2D" parent="Board"]
+unique_name_in_owner = true
+visible = false
+points = PackedVector2Array(96, 0, 976, 0)
+
+[node name="Static" type="StaticBody2D" parent="Board"]
+
+[node name="Collision" type="CollisionPolygon2D" parent="Board/Static"]
+polygon = PackedVector2Array(1032, 0, 1080, 0, 1080, 2704, 0, 2704, 0, 0, 48, 0, 48, 1920, 80, 2304, 256, 2328, 448, 2344, 632, 2344, 832, 2328, 1016, 2304, 1032, 1920)
+
+[node name="Polygon2D" type="Polygon2D" parent="Board/Static"]
+color = Color(0.352941, 1, 1, 1)
+polygon = PackedVector2Array(1032, 0, 1080, 0, 1080, 2704, 0, 2704, 0, 0, 48, 0, 48, 1456, 40, 1464, 48, 1472, 48, 1920, 80, 2304, 256, 2328, 448, 2344, 632, 2344, 832, 2328, 1016, 2304, 1032, 1928, 1032, 1472, 1040, 1464, 1032, 1456)
+
+[connection signal="child_exiting_tree" from="Board/PanelPieces" to="." method="_on_panel_pieces_child_exiting_tree"]
