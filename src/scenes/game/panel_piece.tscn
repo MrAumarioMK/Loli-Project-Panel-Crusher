@@ -10,12 +10,13 @@ bounce = 0.1
 radius = 72.5
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_lig4g"]
-radius = 90.0
+radius = 70.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ayy65"]
 radius = 100.0
 
 [node name="PanelPiece" type="RigidBody2D"]
+input_pickable = true
 physics_material_override = SubResource("PhysicsMaterial_g0y7c")
 gravity_scale = 3.0
 script = ExtResource("1_t852o")

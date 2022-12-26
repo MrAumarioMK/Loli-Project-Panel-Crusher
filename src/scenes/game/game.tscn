@@ -1,12 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://86mwlxt8n45v"]
+[gd_scene load_steps=3 format=3 uid="uid://86mwlxt8n45v"]
 
 [ext_resource type="Script" path="res://src/scenes/game/game.gd" id="1_mhoeh"]
-[ext_resource type="PackedScene" uid="uid://b2us48ageul20" path="res://src/scenes/game/panel_piece.tscn" id="2_av8i8"]
 [ext_resource type="PackedScene" uid="uid://dog82wgfcoqoi" path="res://src/scenes/game/board.tscn" id="3_8mav2"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_mhoeh")
-panel_piece = ExtResource("2_av8i8")
 
 [node name="Board" parent="." instance=ExtResource("3_8mav2")]
 unique_name_in_owner = true
