@@ -60,9 +60,9 @@ func _on_tap_area_2d_input_event(viewport, event, shape_idx):
 		emit_signal("destroy_requested")
 
 
-func _on_pair_area_2d_area_entered(area: Area2D):
-	piece_connections.pair(area.owner, self)
+func _on_neighbor_pair_area_2d_area_entered(area):
+	piece_connections.add_neighbor(area.owner, self)
 
 
-func _on_pair_area_2d_area_exited(area):
-	piece_connections.unpair(area.owner)
+func _on_neighbor_pair_area_2d_area_exited(area):
+	piece_connections.remove_neighbor(area.owner)

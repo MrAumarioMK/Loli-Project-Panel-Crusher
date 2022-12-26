@@ -35,13 +35,13 @@ shape = SubResource("CircleShape2D_kcp4r")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TapArea2D"]
 shape = SubResource("CircleShape2D_lig4g")
 
-[node name="PairArea2D" type="Area2D" parent="."]
+[node name="NeighborPairArea2D" type="Area2D" parent="."]
 collision_layer = 2
 collision_mask = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PairArea2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NeighborPairArea2D"]
 shape = SubResource("CircleShape2D_ayy65")
 
 [connection signal="input_event" from="TapArea2D" to="." method="_on_tap_area_2d_input_event"]
-[connection signal="area_entered" from="PairArea2D" to="." method="_on_pair_area_2d_area_entered"]
-[connection signal="area_exited" from="PairArea2D" to="." method="_on_pair_area_2d_area_exited"]
+[connection signal="area_entered" from="NeighborPairArea2D" to="." method="_on_neighbor_pair_area_2d_area_entered"]
+[connection signal="area_exited" from="NeighborPairArea2D" to="." method="_on_neighbor_pair_area_2d_area_exited"]
