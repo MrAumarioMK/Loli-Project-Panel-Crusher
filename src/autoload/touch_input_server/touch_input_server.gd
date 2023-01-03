@@ -25,7 +25,7 @@ func _ready() -> void:
 	for i in MAX_TOUCH_POINTS:
 		var touch_hitbox = TOUCH_HITBOX.instantiate()
 		$CanvasLayer.add_child(touch_hitbox)
-		touch_hitbox.index = i
+		touch_hitbox.touch_index = i
 		
 		indexes[i] = {
 			"pressed": false,

@@ -1,9 +1,13 @@
 class_name TouchHitbox extends Node2D
 
 
-var index: int
+var touch_index: int
 
 var active: bool
+
+
+func _ready() -> void:
+	$Sprite2D.hide()
 
 
 func update_active(set: bool = active):

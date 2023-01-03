@@ -7,19 +7,21 @@ const PANEL_PIECE = preload("res://src/scenes/game/panel_piece.tscn")
 @export var max_panel_pieces: int = 50
 
 
+var touching_panel_pieces: Array[PanelPiece]
+
+
 func _ready():
 	for i in max_panel_pieces: # *First 2022-12-26 collision ทุกตัวแย่งที่อยู่กัน ทำให้มี spawn ออกนอก board ไว้ค่อยมาแก้
 		spawn_panel_piece()
 
 
 func _input(event: InputEvent):
-	# Check Touch released from inside BoardTouchArea2D
-	if event is InputEventScreenTouch:
-		if not event.is_pressed() and %BoardTouchArea2D.can_unregister_touch(event):
-			%BoardTouchArea2D.unregister_touch()
+	if event is InputEventScreenTouch or event is InputEventScreenDrag:
+		highlight_linked_panel_pieces()
 	
-	if is_dragging_over_area(event):
-		_process_board_touch_highlighting()
+	if event is InputEventScreenTouch:
+		if not event.is_pressed() and is_board_touch_area_registered_by_idx_of(event.index):
+			%BoardTouchArea2D.unregister_touch()
 
 
 func spawn_panel_piece():
@@ -36,7 +38,13 @@ func spawn_random_panel_piece():
 	%PanelPieces.add_child(pp)
 	pp.type = randi_range(1, 5)
 	pp.destroy_requested.connect(
-		_on_panel_piece_destroy_requested.bind(pp)
+		_on_panel_piece_destroy_requested
+	)
+	pp.touch_hitbox_entered.connect(
+		_on_panel_piece_touch_hitbox_entered
+	)
+	pp.touch_hitbox_exited.connect(
+		_on_panel_piece_touch_hitbox_exited
 	)
 	return pp
 
@@ -59,10 +67,12 @@ func get_panel_pieces_count() -> int:
 	return %PanelPieces.get_child_count()
 
 
-func highlight_linked_panel_pieces(panel_piece: PanelPiece):
-	var linked_pieces = panel_piece.piece_connections.get_linked_pieces(panel_piece)
-	for pp in linked_pieces:
-		pp.highlight = true
+func highlight_linked_panel_pieces():
+	unhighlight_all_panel_pieces()
+	for tpp in touching_panel_pieces:
+		var linked_pieces = tpp.piece_connections.get_linked_pieces(tpp)
+		for pp in linked_pieces:
+			pp.highlight = true
 
 
 func unhighlight_all_panel_pieces():
@@ -70,34 +80,32 @@ func unhighlight_all_panel_pieces():
 		pp.highlight = false
 
 
-func is_dragging_over_area(event: InputEvent) -> bool:
-	if not event.is_pressed():
-		return false
-	if not event is InputEventScreenDrag:
-		return false
-	if %BoardTouchArea2D.registered_touch_event == null:
-		return false
-	if event.index != %BoardTouchArea2D.registered_touch_event.index:
-		return false
-	
-	return true
-
-
 func is_released(event) -> bool:
 	return event is InputEventScreenTouch and not event.is_pressed()
 
 
-func _process_board_touch_highlighting():
-#	unhighlight_all_panel_pieces()
-	
-	for pp in %PanelPieces.get_children():
-		if pp.is_tapping_over:
-			highlight_linked_panel_pieces(pp)
+func is_board_touch_area_registered_by_idx_of(idx: int) -> bool:
+	return %BoardTouchArea2D.registered_touch_event != null and idx == %BoardTouchArea2D.registered_touch_event.index
 
 
 # Connected from creation of PanelPiece
-func _on_panel_piece_destroy_requested(panel_piece: PanelPiece):
-	destroy_panel_piece(panel_piece)
+func _on_panel_piece_destroy_requested(panel_piece: PanelPiece, touch_idx: int):
+	if is_board_touch_area_registered_by_idx_of(touch_idx):
+		destroy_panel_piece(panel_piece)
+		touching_panel_pieces.erase(panel_piece)
+
+
+# Connected from creation of PanelPiece
+func _on_panel_piece_touch_hitbox_entered(panel_piece: PanelPiece, touch_idx: int):
+	if is_board_touch_area_registered_by_idx_of(touch_idx):
+		touching_panel_pieces.append(panel_piece)
+		highlight_linked_panel_pieces()
+
+
+# Connected from creation of PanelPiece
+func _on_panel_piece_touch_hitbox_exited(panel_piece: PanelPiece, touch_idx: int):
+	if is_board_touch_area_registered_by_idx_of(touch_idx):
+		touching_panel_pieces.erase(panel_piece)
 
 
 func _on_panel_pieces_child_exiting_tree(node):
@@ -110,7 +118,3 @@ func _on_panel_pieces_child_exiting_tree(node):
 			panel_piece.sleeping = false
 	
 	spawn_panel_piece()
-
-
-func _on_board_touch_area_2d_touch_registered(event) -> void:
-	_process_board_touch_highlighting()

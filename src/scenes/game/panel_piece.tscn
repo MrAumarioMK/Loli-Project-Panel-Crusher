@@ -3,21 +3,21 @@
 [ext_resource type="Texture2D" uid="uid://c6gki6yeusm0p" path="res://assets/img/Fire Panels.png" id="1_4h5ir"]
 [ext_resource type="Script" path="res://src/scenes/game/panel_piece.gd" id="1_t852o"]
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_5fcc6"]
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_t1f7q"]
 bounce = 0.1
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_m3rnl"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_odyu5"]
 radius = 72.5
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_smb4y"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_ilv3l"]
 radius = 70.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_q1ukf"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_48qso"]
 radius = 100.0
 
 [node name="PanelPiece" type="RigidBody2D" groups=["PanelPiece"]]
 input_pickable = true
-physics_material_override = SubResource("PhysicsMaterial_5fcc6")
+physics_material_override = SubResource("PhysicsMaterial_t1f7q")
 gravity_scale = 3.0
 script = ExtResource("1_t852o")
 
@@ -28,7 +28,7 @@ hframes = 2
 vframes = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_m3rnl")
+shape = SubResource("CircleShape2D_odyu5")
 
 [node name="TapArea2D" type="Area2D" parent="."]
 collision_layer = 0
@@ -36,15 +36,16 @@ collision_mask = 4
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TapArea2D"]
-shape = SubResource("CircleShape2D_smb4y")
+shape = SubResource("CircleShape2D_ilv3l")
 
 [node name="NeighborPairArea2D" type="Area2D" parent="."]
 collision_layer = 2
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NeighborPairArea2D"]
-shape = SubResource("CircleShape2D_q1ukf")
+shape = SubResource("CircleShape2D_48qso")
 
-[connection signal="input_event" from="TapArea2D" to="." method="_on_tap_area_2d_input_event"]
+[connection signal="area_entered" from="TapArea2D" to="." method="_on_tap_area_2d_area_entered"]
+[connection signal="area_exited" from="TapArea2D" to="." method="_on_tap_area_2d_area_exited"]
 [connection signal="area_entered" from="NeighborPairArea2D" to="." method="_on_neighbor_pair_area_2d_area_entered"]
 [connection signal="area_exited" from="NeighborPairArea2D" to="." method="_on_neighbor_pair_area_2d_area_exited"]

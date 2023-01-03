@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://src/autoload/touch_input_server/touch_hitbox.gd" id="1_5f7ww"]
 [ext_resource type="Texture2D" uid="uid://cpfdllpdakxpo" path="res://icon_32.png" id="2_ix3qq"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_b1dwp"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lbv1g"]
 size = Vector2(1, 1)
 
 [node name="TouchHitbox" type="Node2D"]
@@ -19,4 +19,4 @@ monitoring = false
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource("RectangleShape2D_b1dwp")
+shape = SubResource("RectangleShape2D_lbv1g")

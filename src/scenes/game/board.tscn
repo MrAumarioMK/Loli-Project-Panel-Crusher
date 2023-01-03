@@ -39,4 +39,3 @@ shape = SubResource("RectangleShape2D_o51w8")
 position = Vector2(0, 1168)
 
 [connection signal="child_exiting_tree" from="PanelPieces" to="." method="_on_panel_pieces_child_exiting_tree"]
-[connection signal="touch_registered" from="BoardTouchArea2D" to="." method="_on_board_touch_area_2d_touch_registered"]
