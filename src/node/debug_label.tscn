@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://canjr1fpxadaf"]
+
+[ext_resource type="Script" path="res://src/node/debug_label.gd" id="1_662mi"]
+
+[node name="DebugLabel" type="Label"]
+script = ExtResource("1_662mi")

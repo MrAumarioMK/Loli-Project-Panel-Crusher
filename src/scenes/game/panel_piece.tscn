@@ -3,21 +3,21 @@
 [ext_resource type="Texture2D" uid="uid://c6gki6yeusm0p" path="res://assets/img/Fire Panels.png" id="1_4h5ir"]
 [ext_resource type="Script" path="res://src/scenes/game/panel_piece.gd" id="1_t852o"]
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_g0y7c"]
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_5fcc6"]
 bounce = 0.1
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_kcp4r"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_m3rnl"]
 radius = 72.5
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_lig4g"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_smb4y"]
 radius = 70.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ayy65"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_q1ukf"]
 radius = 100.0
 
-[node name="PanelPiece" type="RigidBody2D"]
+[node name="PanelPiece" type="RigidBody2D" groups=["PanelPiece"]]
 input_pickable = true
-physics_material_override = SubResource("PhysicsMaterial_g0y7c")
+physics_material_override = SubResource("PhysicsMaterial_5fcc6")
 gravity_scale = 3.0
 script = ExtResource("1_t852o")
 
@@ -28,19 +28,22 @@ hframes = 2
 vframes = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_kcp4r")
+shape = SubResource("CircleShape2D_m3rnl")
 
 [node name="TapArea2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TapArea2D"]
-shape = SubResource("CircleShape2D_lig4g")
+shape = SubResource("CircleShape2D_smb4y")
 
 [node name="NeighborPairArea2D" type="Area2D" parent="."]
 collision_layer = 2
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NeighborPairArea2D"]
-shape = SubResource("CircleShape2D_ayy65")
+shape = SubResource("CircleShape2D_q1ukf")
 
 [connection signal="input_event" from="TapArea2D" to="." method="_on_tap_area_2d_input_event"]
 [connection signal="area_entered" from="NeighborPairArea2D" to="." method="_on_neighbor_pair_area_2d_area_entered"]

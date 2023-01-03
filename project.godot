@@ -74,6 +74,11 @@ _global_script_classes=[{
 "language": &"GDScript",
 "path": "res://src/util/time_formatter.gd"
 }, {
+"base": "Node2D",
+"class": &"TouchHitbox",
+"language": &"GDScript",
+"path": "res://src/autoload/touch_input_server/touch_hitbox.gd"
+}, {
 "base": "Object",
 "class": &"VarSignalEmitter",
 "language": &"GDScript",
@@ -98,6 +103,7 @@ _global_script_class_icons={
 "SaveVersion0": "",
 "SaveVersioningController": "",
 "TimeFormatter": "",
+"TouchHitbox": "",
 "VarSignalEmitter": "",
 "Version": ""
 }
@@ -116,6 +122,7 @@ config/windows_native_icon="res://yami.ico"
 Bgm="*res://src/autoload/bgm.tscn"
 PhysicsFpsAdjuster="*res://src/autoload/physics_fps_adjuster.tscn"
 GameSaver="*res://src/autoload/game_saver/game_saver.gd"
+TouchInputServer="*res://src/autoload/touch_input_server/touch_input_server.tscn"
 
 [display]
 
@@ -137,6 +144,7 @@ pointing/emulate_touch_from_mouse=true
 
 2d_physics/layer_1="Any"
 2d_physics/layer_2="Panel Pieces"
+2d_physics/layer_3="Screen Touch"
 
 [rendering]
 

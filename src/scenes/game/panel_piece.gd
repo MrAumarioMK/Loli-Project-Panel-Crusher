@@ -3,8 +3,6 @@ class_name PanelPiece extends RigidBody2D
 
 signal destroy_requested(panel_piece)
 
-signal highlighting(panel_piece)
-
 
 # *First 2022-12-21 ตัวแปรชั่วคราว ให้ย้ายไปเป็น global variable ถ้ามีระบบอื่น ๆ หลายตัวต้องใช้
 enum Type {
@@ -37,10 +35,12 @@ var highlight: bool:
 		highlight = value
 		update_appearance()
 
+var is_tapping_over: bool
+
 
 func update_appearance():
 	$Sprite2D.texture = SPRITE_TYPE[type]
-	$Sprite2D.modulate = Color.BLACK if highlight else Color.WHITE # *First 2022-12-26 เอฟเฟกต์ชั่วคราว
+	$Sprite2D.modulate = Color.BLACK if is_tapping_over else Color.WHITE # *First 2022-12-26 เอฟเฟกต์ชั่วคราว
 
 
 func is_just_pressed_or_dragging(event) -> bool:
@@ -54,8 +54,7 @@ func is_released(event) -> bool:
 
 func _on_tap_area_2d_input_event(viewport, event, shape_idx):
 	if is_just_pressed_or_dragging(event):
-		emit_signal("highlighting")
-	
+		is_tapping_over = true
 	if is_released(event):
 		emit_signal("destroy_requested")
 
@@ -66,3 +65,4 @@ func _on_neighbor_pair_area_2d_area_entered(area):
 
 func _on_neighbor_pair_area_2d_area_exited(area):
 	piece_connections.remove_neighbor(area.owner)
+
