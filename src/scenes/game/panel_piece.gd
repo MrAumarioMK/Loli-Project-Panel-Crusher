@@ -1,5 +1,13 @@
 class_name PanelPiece extends RigidBody2D
 
+
+signal touch_hitbox_entered(panel_piece, touch_index)
+
+signal touch_hitbox_exited(panel_piece, touch_index)
+
+signal destroy_requested(panel_piece, touch_index)
+
+
 # *First 2022-12-21 ตัวแปรชั่วคราว ให้ย้ายไปเป็น global variable ถ้ามีระบบอื่น ๆ หลายตัวต้องใช้
 enum Type {
 	EARTH = 1,
@@ -26,29 +34,42 @@ var type: Type:
 
 var piece_connections = PanelPieceConnections.new()
 
+var highlight: bool:
+	set(value):
+		highlight = value
+		update_appearance()
+
+var touch_hitboxes_in_area: Array[TouchHitbox]
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventScreenTouch and not event.is_pressed():
+		if touch_hitboxes_in_area.size() > 0:
+			emit_signal("destroy_requested", self, touch_hitboxes_in_area[0].touch_index)
+
 
 func update_appearance():
 	$Sprite2D.texture = SPRITE_TYPE[type]
+	$Sprite2D.modulate = Color.BLACK if highlight else Color.WHITE # *First 2022-12-26 เอฟเฟกต์ชั่วคราว
 
 
-func _on_tap_area_2d_input_event(viewport, event, shape_idx):
-	if event is InputEventMouseButton and event.is_pressed():
-		print()
-		print('From ', self.name)
-		print('Adjacent pairs: ' , piece_connections.pairs.size())
-		for panel_piece in piece_connections.pairs:
-			print('-> ', panel_piece.type, ': ', panel_piece.name)
-		
-		var linked_pieces = piece_connections.get_linked_pieces(self)
-		print('Linked pairs: ', linked_pieces.size())
-		for panel_piece in linked_pieces:
-			print('-> ', panel_piece)
-			panel_piece.queue_free()
+func _on_neighbor_pair_area_2d_area_entered(area):
+	if area.owner is PanelPiece:
+		piece_connections.add_neighbor(area.owner, self)
 
 
-func _on_pair_area_2d_area_entered(area: Area2D):
-	piece_connections.pair(area.owner, self)
+func _on_neighbor_pair_area_2d_area_exited(area):
+	if area.owner is PanelPiece:
+		piece_connections.remove_neighbor(area.owner)
 
 
-func _on_pair_area_2d_area_exited(area):
-	piece_connections.unpair(area.owner)
+func _on_tap_area_2d_area_entered(area: Area2D) -> void:
+	if area.owner is TouchHitbox:
+		touch_hitboxes_in_area.append(area.owner)
+		emit_signal("touch_hitbox_entered", self, area.owner.touch_index)
+
+
+func _on_tap_area_2d_area_exited(area: Area2D) -> void:
+	if area.owner is TouchHitbox:
+		touch_hitboxes_in_area.erase(area.owner)
+		emit_signal("touch_hitbox_exited", self, area.owner.touch_index)

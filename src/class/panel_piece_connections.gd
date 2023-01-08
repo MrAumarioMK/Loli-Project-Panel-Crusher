@@ -1,25 +1,25 @@
 class_name PanelPieceConnections extends Object
 
 
-var pairs: Array[PanelPiece]
+var neighbors: Array[PanelPiece]
 
 
-func pair(source: PanelPiece, myself: PanelPiece):
+func add_neighbor(source: PanelPiece, myself: PanelPiece):
 	if source == myself:
 		return
 	if source.type != myself.type:
 		return
-	if pairs.has(source):
+	if neighbors.has(source):
 		return
 	
-	pairs.append(source)
+	neighbors.append(source)
 
 
-func unpair(source: PanelPiece):
-	if not pairs.has(source):
+func remove_neighbor(source: PanelPiece):
+	if not neighbors.has(source):
 		return
 	
-	pairs.remove_at(pairs.find(source))
+	neighbors.remove_at(neighbors.find(source))
 
 
 func get_linked_pieces(from: PanelPiece, exclude_from: bool = false) -> Array[PanelPiece]:
@@ -30,7 +30,7 @@ func get_linked_pieces(from: PanelPiece, exclude_from: bool = false) -> Array[Pa
 	
 	while not panel_queue.is_empty():
 		for i in panel_queue:
-			for j in i.piece_connections.pairs:
+			for j in i.piece_connections.neighbors:
 				if paired_panels.has(j):
 					continue
 				

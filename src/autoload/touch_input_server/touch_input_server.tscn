@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://dwpc5gor11j46"]
+
+[ext_resource type="Script" path="res://src/autoload/touch_input_server/touch_input_server.gd" id="1_vebwk"]
+
+[node name="touch_input_server" type="Node2D"]
+script = ExtResource("1_vebwk")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 99
+follow_viewport_enabled = true
